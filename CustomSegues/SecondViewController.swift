@@ -10,12 +10,18 @@ import UIKit
 
 class SecondViewController: UIViewController {
 
+    var message: NSString!
     @IBOutlet weak var lblMessage: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        var swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "showFirstViewController")
+        swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Down
+        self.view.addGestureRecognizer(swipeGestureRecognizer)
+        
+        lblMessage.text = message
     }
 
     override func didReceiveMemoryWarning() {
@@ -24,6 +30,17 @@ class SecondViewController: UIViewController {
     }
     
 
+    func showFirstViewController() {
+        self.performSegueWithIdentifier("FIRST_SEGUE_UNWIND", sender: self)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "FIRST_SEGUE_UNWIND" {
+            let firstViewController = segue.destinationViewController as FirstViewController
+            firstViewController.lblMessage.text = "You just came back from the 2nd VC"
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
